@@ -1,15 +1,16 @@
 package com.example.productservicejanbatch24.controllers;
 
 
+import com.example.productservicejanbatch24.dtos.ExcpetionDto;
+import com.example.productservicejanbatch24.exceptions.ProductNotFoundException;
 import com.example.productservicejanbatch24.models.Product;
 import com.example.productservicejanbatch24.services.ProductService;
 import com.example.productservicejanbatch24.services.ProductServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.List;
@@ -32,7 +33,7 @@ public class ProductController {
 //    }
 
     @GetMapping("/{id}")
-    public Product getProductbyId(@PathVariable("id") Long id) {
+    public Product getProductbyId(@PathVariable("id") Long id) throws ProductNotFoundException {
         return productService.getProductById(id);
     }
 
@@ -41,8 +42,32 @@ public class ProductController {
         return productService.getAllProducts();
     }
 
+    @PostMapping
+    public Product createProduct(@RequestBody Product product) {
+        return productService.addProduct(product);
+    }
+
 //    public String getProductByCategory(String category) {
 //
+//    }
+
+//    @ExceptionHandler(ProductNotFoundException.class)
+//    //@ResponseStatus(HttpStatus.NOT_FOUND)
+//    private ResponseEntity<ExcpetionDto> handleProductNotFoundException(ProductNotFoundException e) {
+//        ExcpetionDto excpetionDto = new ExcpetionDto();
+//        excpetionDto.setMessage(e.getMessage());
+//        excpetionDto.setStatus("Failure");
+//        ResponseEntity<ExcpetionDto> responseEntity = new ResponseEntity<>(excpetionDto, HttpStatus.NOT_FOUND);
+//        return responseEntity;
+//    }
+
+    //    @ExceptionHandler(ProductNotFoundException.class)
+//    //@ResponseStatus(HttpStatus.NOT_FOUND)
+//    private ExcpetionDto handleProductNotFoundException(ProductNotFoundException e) {
+//        ExcpetionDto excpetionDto = new ExcpetionDto();
+//        excpetionDto.setMessage(e.getMessage());
+//        excpetionDto.setStatus("Failure");
+//        return excpetionDto;
 //    }
 
 }

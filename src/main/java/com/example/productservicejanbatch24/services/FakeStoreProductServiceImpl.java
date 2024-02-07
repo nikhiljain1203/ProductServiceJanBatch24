@@ -1,6 +1,7 @@
 package com.example.productservicejanbatch24.services;
 
 import com.example.productservicejanbatch24.dtos.FakeStoreProductDto;
+import com.example.productservicejanbatch24.exceptions.ProductNotFoundException;
 import com.example.productservicejanbatch24.models.Category;
 import com.example.productservicejanbatch24.models.Product;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ import java.util.List;
 public class FakeStoreProductServiceImpl implements ProductService{
 
     private RestTemplateBuilder restTemplateBuilder;
-    private String getProductUrl = "https://fakestoreapi.com/products/1";
+    private String specificProductUrl = "https://fakestoreapi.com/products/{id}";
     private String genericProductUrl = "https://fakestoreapi.com/products";
 
     @Autowired
@@ -25,9 +26,14 @@ public class FakeStoreProductServiceImpl implements ProductService{
         this.restTemplateBuilder = restTemplateBuilder;
     }
     @Override
-    public Product getProductById(Long id) {
+    public Product getProductById(Long id) throws ProductNotFoundException {
         RestTemplate restTemplate = restTemplateBuilder.build();
-        ResponseEntity<FakeStoreProductDto> responseEntity = restTemplate.getForEntity(getProductUrl, FakeStoreProductDto.class);
+        ResponseEntity<FakeStoreProductDto> responseEntity =
+                restTemplate.getForEntity(specificProductUrl, FakeStoreProductDto.class, id);
+        if(responseEntity.getBody() == null) {
+            //throw exception
+            throw new ProductNotFoundException("Product not found for id: " + id);
+        }
         return getProductFromFakeStoreProductDto(responseEntity.getBody());
     }
 
@@ -48,8 +54,13 @@ public class FakeStoreProductServiceImpl implements ProductService{
     }
 
     @Override
-    public void addProduct() {
+    public Product addProduct(Product product) {
+        RestTemplate restTemplate = restTemplateBuilder.build();
+        ResponseEntity<FakeStoreProductDto> responseEntity =
+                restTemplate.postForEntity(genericProductUrl,
+                        getFakeStoreProductDtoFromProduct(product), FakeStoreProductDto.class);
 
+        return getProductFromFakeStoreProductDto(responseEntity.getBody());
     }
 
     @Override
@@ -68,6 +79,15 @@ public class FakeStoreProductServiceImpl implements ProductService{
         product.setPrice(fakeStoreProductDto.getPrice());
 
         return product;
+    }
+
+    private FakeStoreProductDto getFakeStoreProductDtoFromProduct(Product product){
+        FakeStoreProductDto fakeStoreProductDto = new FakeStoreProductDto();
+        fakeStoreProductDto.setTitle(product.getTitle());
+        fakeStoreProductDto.setDescription(product.getDesc());
+        fakeStoreProductDto.setCategory(product.getCategory().getName());
+        fakeStoreProductDto.setPrice(product.getPrice());
+        return fakeStoreProductDto;
     }
 
 
