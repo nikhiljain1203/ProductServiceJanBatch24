@@ -1,6 +1,7 @@
 package com.example.productservicejanbatch24.controllers;
 
 
+import com.example.productservicejanbatch24.models.Product;
 import com.example.productservicejanbatch24.services.ProductService;
 import com.example.productservicejanbatch24.services.ProductServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,13 +32,13 @@ public class ProductController {
 //    }
 
     @GetMapping("/{id}")
-    public String getProductbyId(@PathVariable("id") Long id) {
+    public Product getProductbyId(@PathVariable("id") Long id) {
         return productService.getProductById(id);
     }
 
     @GetMapping()
-    public List<String> getAllProducts() {
-        return Collections.emptyList();
+    public List<Product> getAllProducts() {
+        return productService.getAllProducts();
     }
 
 //    public String getProductByCategory(String category) {
