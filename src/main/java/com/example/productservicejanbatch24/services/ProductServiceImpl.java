@@ -1,7 +1,8 @@
 package com.example.productservicejanbatch24.services;
 
+import com.example.productservicejanbatch24.dtos.FakeStoreProductDto;
 import com.example.productservicejanbatch24.models.Product;
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,8 +21,9 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public void deleteProductById() {
+    public Product deleteProductById(Long id) {
 
+        return null;
     }
 
     @Override

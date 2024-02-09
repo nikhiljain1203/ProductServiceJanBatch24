@@ -47,6 +47,11 @@ public class ProductController {
         return productService.addProduct(product);
     }
 
+    @DeleteMapping("/{id}")
+    public Product deleteProductbyId(@PathVariable("id") Long id) throws ProductNotFoundException {
+        return productService.deleteProductById(id);
+    }
+
 //    public String getProductByCategory(String category) {
 //
 //    }

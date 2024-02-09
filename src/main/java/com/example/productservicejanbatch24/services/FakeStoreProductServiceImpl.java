@@ -4,11 +4,14 @@ import com.example.productservicejanbatch24.dtos.FakeStoreProductDto;
 import com.example.productservicejanbatch24.exceptions.ProductNotFoundException;
 import com.example.productservicejanbatch24.models.Category;
 import com.example.productservicejanbatch24.models.Product;
+import com.example.productservicejanbatch24.thridpartyclients.FakeStoreClient;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RequestCallback;
+import org.springframework.web.client.ResponseExtractor;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.LinkedList;
@@ -17,50 +20,35 @@ import java.util.List;
 @Service("FakeProductService")
 public class FakeStoreProductServiceImpl implements ProductService{
 
-    private RestTemplateBuilder restTemplateBuilder;
-    private String specificProductUrl = "https://fakestoreapi.com/products/{id}";
-    private String genericProductUrl = "https://fakestoreapi.com/products";
+    private FakeStoreClient fakeStoreClient;
 
     @Autowired
-    public FakeStoreProductServiceImpl(RestTemplateBuilder restTemplateBuilder) {
-        this.restTemplateBuilder = restTemplateBuilder;
+    public FakeStoreProductServiceImpl(FakeStoreClient fakeStoreClient) {
+        this.fakeStoreClient = fakeStoreClient;
     }
     @Override
     public Product getProductById(Long id) throws ProductNotFoundException {
-        RestTemplate restTemplate = restTemplateBuilder.build();
-        ResponseEntity<FakeStoreProductDto> responseEntity =
-                restTemplate.getForEntity(specificProductUrl, FakeStoreProductDto.class, id);
-        if(responseEntity.getBody() == null) {
-            //throw exception
-            throw new ProductNotFoundException("Product not found for id: " + id);
-        }
-        return getProductFromFakeStoreProductDto(responseEntity.getBody());
+
+        return getProductFromFakeStoreProductDto(fakeStoreClient.getProductById(id));
     }
 
     @Override
     public List<Product> getAllProducts() {
-        RestTemplate restTemplate = restTemplateBuilder.build();
-        ResponseEntity<FakeStoreProductDto[]> responseEntity = restTemplate.getForEntity(genericProductUrl, FakeStoreProductDto[].class);
         List<Product> productList = new LinkedList<>();
-        for(FakeStoreProductDto fakeStoreProductDto: responseEntity.getBody()) {
+        for(FakeStoreProductDto fakeStoreProductDto: fakeStoreClient.getAllProducts()) {
             productList.add(getProductFromFakeStoreProductDto(fakeStoreProductDto));
         }
         return productList;
     }
 
     @Override
-    public void deleteProductById() {
-
+    public Product deleteProductById(Long id) {
+       return getProductFromFakeStoreProductDto(fakeStoreClient.deleteProductById(id));
     }
 
     @Override
     public Product addProduct(Product product) {
-        RestTemplate restTemplate = restTemplateBuilder.build();
-        ResponseEntity<FakeStoreProductDto> responseEntity =
-                restTemplate.postForEntity(genericProductUrl,
-                        getFakeStoreProductDtoFromProduct(product), FakeStoreProductDto.class);
-
-        return getProductFromFakeStoreProductDto(responseEntity.getBody());
+        return getProductFromFakeStoreProductDto(fakeStoreClient.addProduct(getFakeStoreProductDtoFromProduct(product)));
     }
 
     @Override
@@ -103,5 +91,10 @@ public class FakeStoreProductServiceImpl implements ProductService{
 
     ObjectMapper - Map the Json Map to an object
 
+     */
+
+    /*
+    1. Handle the 3rd party calls
+    2. Mapping
      */
 }
