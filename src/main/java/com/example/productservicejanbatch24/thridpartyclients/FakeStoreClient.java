@@ -5,6 +5,7 @@ import com.example.productservicejanbatch24.exceptions.ProductNotFoundException;
 import com.example.productservicejanbatch24.models.Category;
 import com.example.productservicejanbatch24.models.Product;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -20,12 +21,16 @@ import java.util.List;
 public class FakeStoreClient {
 
     private RestTemplateBuilder restTemplateBuilder;
-    private String specificProductUrl = "https://fakestoreapi.com/products/{id}";
+
+    @Value("${fakestore.api.url}")
+    private String specificProductUrl;
     private String genericProductUrl = "https://fakestoreapi.com/products";
 
     @Autowired
-    public FakeStoreClient(RestTemplateBuilder restTemplateBuilder) {
+    public FakeStoreClient(RestTemplateBuilder restTemplateBuilder){
+                          // @Value("${fakestore.api.url}") String fakestoreurl) {
         this.restTemplateBuilder = restTemplateBuilder;
+        //this.specificProductUrl = fakestoreurl;
     }
 
     public FakeStoreProductDto getProductById(Long id) throws ProductNotFoundException {
