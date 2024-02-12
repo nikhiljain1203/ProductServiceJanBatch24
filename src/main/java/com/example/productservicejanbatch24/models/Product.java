@@ -1,6 +1,7 @@
 package com.example.productservicejanbatch24.models;
 
-import lombok.Data;
+import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,12 +9,16 @@ import java.util.List;
 
 @Getter
 @Setter
+@Entity
 public class Product extends BaseModel {
-    private Long id;
     private String title;
-    private String desc;
+    private String description;
     private Long price;
+    @ManyToOne
     private Category category;
-    private List<String> allowedUser;
 
+    /*
+    1 Product - 1 Category
+    1 Category - M Product
+     */
 }

@@ -60,7 +60,7 @@ public class FakeStoreProductServiceImpl implements ProductService{
         Product product = new Product();
         product.setId(fakeStoreProductDto.getId());
         product.setTitle(fakeStoreProductDto.getTitle());
-        product.setDesc(fakeStoreProductDto.getDescription());
+        product.setDescription(fakeStoreProductDto.getDescription());
         Category category = new Category();
         category.setName(fakeStoreProductDto.getCategory());
         product.setCategory(category);
@@ -72,7 +72,7 @@ public class FakeStoreProductServiceImpl implements ProductService{
     private FakeStoreProductDto getFakeStoreProductDtoFromProduct(Product product){
         FakeStoreProductDto fakeStoreProductDto = new FakeStoreProductDto();
         fakeStoreProductDto.setTitle(product.getTitle());
-        fakeStoreProductDto.setDescription(product.getDesc());
+        fakeStoreProductDto.setDescription(product.getDescription());
         fakeStoreProductDto.setCategory(product.getCategory().getName());
         fakeStoreProductDto.setPrice(product.getPrice());
         return fakeStoreProductDto;
