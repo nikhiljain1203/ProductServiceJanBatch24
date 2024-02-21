@@ -48,14 +48,14 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public Product addProduct(Product product) {
 
-        Optional<Category> categoryOptional =
-                this.categoryRepo.findByName(product.getCategory().getName());
-        if(categoryOptional.isPresent()){
-            product.setCategory(categoryOptional.get());
-        } else {
-            Category category = categoryRepo.save(product.getCategory());
-            product.setCategory(category);
-        }
+//        Optional<Category> categoryOptional =
+//                this.categoryRepo.findByName(product.getCategory().getName());
+//        if(categoryOptional.isPresent()){
+//            product.setCategory(categoryOptional.get());
+//        } else {
+//            Category category = categoryRepo.save(product.getCategory());
+//            product.setCategory(category);
+//        }
 
         return this.productRepo.save(product);
     }
