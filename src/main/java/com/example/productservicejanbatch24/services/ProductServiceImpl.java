@@ -5,12 +5,14 @@ import com.example.productservicejanbatch24.models.Category;
 import com.example.productservicejanbatch24.models.Product;
 import com.example.productservicejanbatch24.repos.CategoryRepo;
 import com.example.productservicejanbatch24.repos.ProductRepo;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Primary
 @Service("SelfProductService")
 public class ProductServiceImpl implements ProductService{
     private ProductRepo productRepo;
