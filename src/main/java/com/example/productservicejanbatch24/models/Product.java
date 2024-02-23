@@ -17,7 +17,8 @@ public class Product extends BaseModel {
     private Long price;
     @ManyToOne(cascade = CascadeType.ALL)
     private Category category;
-
+    private int quantity;
+    private int rating;
     /*
     1 Product - 1 Category
     1 Category - M Product

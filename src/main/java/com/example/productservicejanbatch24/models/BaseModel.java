@@ -12,7 +12,7 @@ import java.util.UUID;
 @MappedSuperclass
 public class BaseModel {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
 //    @GeneratedValue(generator = "generator_name")
 //    @GenericGenerator(name = "generator_name",
 //            strategy = "uuid2")
