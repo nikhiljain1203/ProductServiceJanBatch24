@@ -4,6 +4,7 @@ package com.example.productservicejanbatch24.controllers;
 import com.example.productservicejanbatch24.dtos.ExcpetionDto;
 import com.example.productservicejanbatch24.exceptions.ProductNotFoundException;
 import com.example.productservicejanbatch24.models.Product;
+import com.example.productservicejanbatch24.security.services.AuthenticationService;
 import com.example.productservicejanbatch24.services.ProductService;
 import com.example.productservicejanbatch24.services.ProductServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.AccessDeniedException;
 import java.util.Collections;
 import java.util.List;
 
@@ -21,10 +23,12 @@ public class ProductController {
 
 //    @Autowired
     private ProductService productService;
+    private AuthenticationService authenticationService;
 
     @Autowired
-    public ProductController(@Qualifier("SelfProductService") ProductService productService) {
+    public ProductController(@Qualifier("SelfProductService") ProductService productService, AuthenticationService authenticationService) {
         this.productService = productService;
+        this.authenticationService = authenticationService;
     }
 
 //    @Autowired
@@ -33,7 +37,12 @@ public class ProductController {
 //    }
 
     @GetMapping("/{id}")
-    public Product getProductbyId(@PathVariable("id") Long id) throws ProductNotFoundException {
+    public Product getProductbyId(
+                                  @PathVariable("id") Long id) throws ProductNotFoundException, AccessDeniedException {
+//        if(!authenticationService.authenticate(token)) {
+//            throw new AccessDeniedException("You are not authorised");
+//        }
+
         Product p = productService.getProductById(id);
         //p.setId(2L);
         return p;
