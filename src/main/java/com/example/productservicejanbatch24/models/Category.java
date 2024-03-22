@@ -13,8 +13,8 @@ import java.util.List;
 @Entity
 public class Category extends BaseModel{
     private String name;
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "category")
-    private List<Product> products;
+//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "category")
+//    private List<Product> products;
 }
 
 /*

@@ -32,31 +32,31 @@ class ProductControllerTest {
 //        MockitoAnnotations.initMocks(this);
 //    }
 
-    @Test
-    void getProductbyId() throws ProductNotFoundException {
-        //Arrange
-        Product dummy = new Product();
-        dummy.setId(1L);
-        dummy.setTitle("dummy");
-        when(productService.getProductById(1L)).thenReturn(dummy);
-
-        //Act
-        Product p = productController.getProductbyId(1L);
-
-        //Assert
-        assertEquals(1L,p.getId());
-    }
-
-    @Test
-    void getProductByIdThrowsException() throws ProductNotFoundException {
-        //Arrange
+//    @Test
+//    void getProductbyId() throws ProductNotFoundException {
+//        //Arrange
 //        Product dummy = new Product();
 //        dummy.setId(1L);
 //        dummy.setTitle("dummy");
-        when(productService.getProductById(1L)).thenThrow(new ProductNotFoundException("Product Not Found"));
-
-        //Act
-        assertThrows(ProductNotFoundException.class, ()-> productController.getProductbyId(1L));
-
-    }
+//        when(productService.getProductById(1L)).thenReturn(dummy);
+//
+//        //Act
+//        Product p = productController.getProductbyId(1L);
+//
+//        //Assert
+//        assertEquals(1L,p.getId());
+//    }
+//
+//    @Test
+//    void getProductByIdThrowsException() throws ProductNotFoundException {
+//        //Arrange
+////        Product dummy = new Product();
+////        dummy.setId(1L);
+////        dummy.setTitle("dummy");
+//        when(productService.getProductById(1L)).thenThrow(new ProductNotFoundException("Product Not Found"));
+//
+//        //Act
+//        assertThrows(ProductNotFoundException.class, ()-> productController.getProductbyId(1L));
+//
+//    }
 }

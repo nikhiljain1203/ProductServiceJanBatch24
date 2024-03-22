@@ -7,6 +7,7 @@ import com.example.productservicejanbatch24.models.Product;
 import com.example.productservicejanbatch24.thridpartyclients.FakeStoreClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -39,6 +40,11 @@ public class FakeStoreProductServiceImpl implements ProductService{
             productList.add(getProductFromFakeStoreProductDto(fakeStoreProductDto));
         }
         return productList;
+    }
+
+    @Override
+    public Page<Product> getAllProducts(int pageNumber, int pageSize) {
+        return null;
     }
 
     @Override

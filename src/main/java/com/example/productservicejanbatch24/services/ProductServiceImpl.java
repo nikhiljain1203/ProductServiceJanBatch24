@@ -6,10 +6,15 @@ import com.example.productservicejanbatch24.models.Product;
 import com.example.productservicejanbatch24.repos.CategoryRepo;
 import com.example.productservicejanbatch24.repos.ProductRepo;
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Primary
@@ -18,13 +23,22 @@ public class ProductServiceImpl implements ProductService{
     private ProductRepo productRepo;
     private CategoryRepo categoryRepo;
 
-    public ProductServiceImpl(ProductRepo productRepo, CategoryRepo categoryRepo) {
+    private RestTemplate restTemplate;
+
+    public ProductServiceImpl(ProductRepo productRepo, CategoryRepo categoryRepo,
+                              RestTemplate restTemplate) {
         this.productRepo = productRepo;
         this.categoryRepo = categoryRepo;
+        this.restTemplate = restTemplate;
     }
 
     @Override
     public Product getProductById(Long id) {
+
+        ResponseEntity<Object> response =
+                restTemplate.getForEntity("http://userservice/users/1",
+                        Object.class);
+
         /*
         Product product = this.productrepo.findById(id);
         Category category = product.getCategory();
@@ -39,6 +53,12 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public List<Product> getAllProducts() {
         return null;
+    }
+
+    @Override
+    public Page<Product> getAllProducts(int pageNumber, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        return productRepo.findAll(pageable);
     }
 
     @Override
